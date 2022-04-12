@@ -61,7 +61,10 @@ class DrawingView(context: Context, attrs: AttributeSet ) : View(context, attrs)
     */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(mCanvasBitmap!!, 0f,0f, mCanvasPaint)
+        mCanvasBitmap?.let {
+            canvas.drawBitmap(it, 0f,   0f, mCanvasPaint)
+        }
+        //canvas.drawBitmap(mCanvasBitmap!!, 0f,0f, mCanvasPaint)
 
         for (path in mPaths){
             //How thick the pen should be
