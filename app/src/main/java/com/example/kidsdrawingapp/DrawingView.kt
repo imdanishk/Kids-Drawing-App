@@ -13,7 +13,7 @@ class DrawingView(context: Context, attrs: AttributeSet ) : View(context, attrs)
     private var mDrawPath: CustomPath? = null
     //An instance of the Bitmap
     private var mCanvasBitmap: Bitmap? = null
-    //The Paint class holds the style and color information about how to draw
+    //The Paint class holds the style and color information about how to draw geometrics, text & bitmaps
     private var mDrawPaint: Paint? = null
     //Instance of Canvas paint view
     private var mCanvasPaint: Paint? = null
@@ -124,6 +124,11 @@ class DrawingView(context: Context, attrs: AttributeSet ) : View(context, attrs)
         mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
 
         mDrawPaint!!.strokeWidth = mBrushSize
+    }
+
+    fun setColor(newColor: String){
+        color = Color.parseColor(newColor)
+
     }
 
 
