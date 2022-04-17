@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private var drawingView: DrawingView? = null
     private var mImageButtonCurrentPaint: ImageButton? = null
-    var customProgressDialog: Dialog? = null
+    private var customProgressDialog: Dialog? = null
 
 
     private val openGalleryLauncher: ActivityResultLauncher<Intent> =
@@ -241,6 +242,7 @@ class MainActivity : AppCompatActivity() {
                         if (result.isNotEmpty()){
                             Toast.makeText(this@MainActivity, "File saved successfully: $result",
                                 Toast.LENGTH_SHORT).show()
+                            shareImage(result)
                         }
                         else {
                             Toast.makeText(this@MainActivity, "Something went wrong while saving the file",
@@ -269,6 +271,20 @@ class MainActivity : AppCompatActivity() {
         if (customProgressDialog != null) {
             customProgressDialog?.dismiss()
             customProgressDialog = null
+        }
+    }
+
+    private fun shareImage(result:String){
+
+        MediaScannerConnection.scanFile(
+            this@MainActivity, arrayOf(result), null) {
+                path, uri ->
+            // This line of code use hunxa to share image after storage
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.type = "image/png"
+            startActivity(Intent.createChooser(shareIntent, "Share"))
         }
     }
 }
