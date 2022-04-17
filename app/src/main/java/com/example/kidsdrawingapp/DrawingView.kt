@@ -21,23 +21,24 @@ class DrawingView(context: Context, attrs: AttributeSet ) : View(context, attrs)
     private var mBrushSize: Float = 0.toFloat()
     //Variable to hold a color of the stroke
     private var color = Color.BLACK
-    /**
-     * A variable for canvas, will be initialized later and used
-     *
-     * The Canvas class holds the 'draw' calls. To draw something, you need 4 basic components.
-     * the draw calls(writing into the bitmap), a drawing primitive(e.g. Rect, Path, text, Bitmap),
-     * and a paint(to describe the colors and styles for the drawing)
-     */
+
     private var canvas: Canvas? = null
     private val mPaths = ArrayList<CustomPath>()
+    private val mUndoPaths = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
     }
 
-    /**
-     *This method initializes the attributes of the ViewForDrawing class
-     */
+
+    fun onCLickUndo(){
+        if (mPaths.size > 0){
+            mUndoPaths.add(mPaths.removeAt(mPaths.size - 1))
+            invalidate()
+        }
+    }
+
+    // This method initializes the attributes of the ViewForDrawing class
 
     private fun setUpDrawing() {
         mDrawPaint = Paint()
@@ -56,9 +57,9 @@ class DrawingView(context: Context, attrs: AttributeSet ) : View(context, attrs)
         canvas = Canvas(mCanvasBitmap!!)
     }
 
-    /**
-     * This method is called when a stroke is drawn on the canvas as a part of painting
-    */
+
+     // This method is called when a stroke is drawn on the canvas as a part of painting
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         mCanvasBitmap?.let {
